@@ -39,11 +39,14 @@ namespace Bloggr.Services
       _blogsRepository.Edit(blogId, blogData);
       return blog;
     }
-    public Blog Delete(int blogId)
+    public void Delete(int blogId, string userId)
     {
-      var blog = GetById(blogId);
+      Blog blog = GetById(blogId);
+      if (blog.CreatorId != userId)
+      {
+        throw new Exception("not authorized");
+      }
       _blogsRepository.Delete(blogId);
-      return blog;
     }
   }
 }

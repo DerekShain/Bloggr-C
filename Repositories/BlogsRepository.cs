@@ -13,7 +13,7 @@ namespace Bloggr.Repositories
     {
       _dataBase = dataBase;
     }
-    public Blog Post(Blog blogData)
+    internal Blog Post(Blog blogData)
     {
       var sql = @"
       INSERT INTO blogs(
@@ -30,21 +30,21 @@ namespace Bloggr.Repositories
         @Published,
         @CreatorId
       );
-     SELECT LAST_INSERT_ID()
+     SELECT LAST_INSERT_ID();
       ";
       int id = _dataBase.ExecuteScalar<int>(sql, blogData);
       blogData.Id = id;
       return blogData;
     }
 
-    public Blog GetById(int blogId)
+    internal Blog GetById(int blogId)
     {
       string sql = @"
       SELECT 
       b.*,
       a.* 
       FROM blogs b
-      JOIN accounts a on b.creatorId = a.id
+      JOIN accounts a on a.id= b.creatorId
       WHERE b.id = @blogId;
       ";
       return _dataBase.Query<Blog, Account, Blog>(sql, (b, a) =>
@@ -54,12 +54,15 @@ namespace Bloggr.Repositories
       }, new { blogId }).FirstOrDefault();
     }
 
-    public List<Blog> GetAll()
+    internal List<Blog> GetAll()
     {
-      return _dataBase.Query<Blog>("SELECT * FROM blogs").ToList();
+      return _dataBase.Query<Blog>(@"
+      SELECT 
+      * 
+      FROM blogs").ToList();
     }
 
-    public Blog Edit(int blogId, Blog blogData)
+    internal Blog Edit(int blogId, Blog blogData)
     {
       blogData.Id = blogId;
       var sql = @"
@@ -69,23 +72,23 @@ namespace Bloggr.Repositories
       body = @Body,
       imgUrl = @ImgUrl,
       published = @Published
-    WHERE id = @Id
+      WHERE id = @Id
       ";
       var rowsAffected = _dataBase.Execute(sql, blogData);
       if (rowsAffected > 1)
       {
         throw new System.Exception("SOmething is wrong");
       }
-      if (rowsAffected == 0)
-      {
-        throw new System.Exception("Edit Failed");
-      }
+      // if (rowsAffected == 0)
+      // {
+      //   throw new System.Exception("Edit Failed");
+      // }
       return blogData;
     }
 
-    public void Delete(int blogId)
+    internal void Delete(int blogId)
     {
-      var rowsAffected = _dataBase.Execute("DELETE FROM blogs WHERE id = @id", new { blogId });
+      var rowsAffected = _dataBase.Execute("DELETE FROM blogs WHERE id = @blogId LIMIT 1", new { blogId });
       if (rowsAffected > 1)
       {
         throw new System.Exception("Something is wrong");

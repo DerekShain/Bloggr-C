@@ -14,13 +14,13 @@ namespace Bloggr.Repositories
     {
       _dataBase = dataBase;
     }
-    public List<Comment> GetBlogComment(int blogId)
+    internal List<Comment> GetBlogComment(int blogId)
     {
       string sql = @" SELECT * FROM comments c WHERE c.blogId = @blogId";
       return _dataBase.Query<Comment>(sql, new { blogId }).ToList();
     }
 
-    public Comment Post(Comment commentData)
+    internal Comment Post(Comment commentData)
     {
       var sql = @"
       INSERT INTO comments(
@@ -40,7 +40,7 @@ namespace Bloggr.Repositories
       return commentData;
     }
 
-    public Comment Edit(int commentId, Comment commentData)
+    internal Comment Edit(int commentId, Comment commentData)
     {
       commentData.Id = commentId;
       var sql = @"
@@ -61,12 +61,12 @@ namespace Bloggr.Repositories
       return commentData;
     }
 
-    public Comment GetById(int commentId)
+    internal Comment GetById(int commentId)
     {
       return _dataBase.QueryFirstOrDefault<Comment>("SELECT * FROM artists WHERE id = @id", new { commentId });
     }
 
-    public void Delete(int commentId)
+    internal void Delete(int commentId)
     {
       var rowsAffected = _dataBase.Execute("DELETE FROM comments WHERE id = @id", new { commentId });
       if (rowsAffected > 1)

@@ -11,5 +11,8 @@ namespace Bloggr.Models
     public string Body { get; set; }
     [Required]
     public int Blog { get; set; }
+    public string Title { get; set; }
+    public bool published { get; set; }
+    public Profile Creator { get; internal set; }
   }
 }

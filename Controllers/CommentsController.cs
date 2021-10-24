@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using Bloggr.Models;
 using Bloggr.Services;
+using CodeWorks.Auth0Provider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +19,14 @@ namespace Bloggr.Controllers
 
     [HttpPost]
     [Authorize]
-    public ActionResult<Comment> Post([FromBody] Comment commentData)
+    public async Task<ActionResult<Comment>> Post([FromBody] Comment commentData)
     {
       try
       {
-        var comment = _commentsService.Post(commentData);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        commentData.CreatorId = userInfo.Id;
+        Comment comment = _commentsService.Post(commentData);
+        comment.Creator = userInfo;
         return Ok(comment);
       }
       catch (System.Exception e)

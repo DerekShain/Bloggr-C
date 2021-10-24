@@ -78,11 +78,13 @@ namespace Bloggr.Controllers
     }
     [HttpPut("{blogId}")]
     [Authorize]
-    public ActionResult<Blog> Edit(int blogId, [FromBody] Blog blogData)
+    public async Task<ActionResult<Blog>> Edit(int blogId, [FromBody] Blog blogData)
     {
       try
       {
-        var blog = _blogsService.Edit(blogId, blogData);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        blogData.CreatorId = userInfo.Id;
+        Blog blog = _blogsService.Edit(blogId, blogData);
         return Ok(blog);
       }
       catch (System.Exception e)
@@ -92,12 +94,13 @@ namespace Bloggr.Controllers
     }
     [HttpDelete("{blogId}")]
     [Authorize]
-    public ActionResult<Blog> Delete(int blogId)
+    public async Task<ActionResult<string>> Delete(int blogId)
     {
       try
       {
-        var blog = _blogsService.Delete(blogId);
-        return Ok(blog);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        _blogsService.Delete(blogId, userInfo.Id);
+        return Ok("Deleted");
       }
       catch (System.Exception e)
       {
