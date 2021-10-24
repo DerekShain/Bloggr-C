@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggr.Controllers
 {
-  // ✅GET: '/api/blogs' Returns all pubished blogs
+  // ✅GET: '/api/blogs' Returns all published blogs
   // ✅GET: '/api/blogs/:id' Returns blog by Id
   // ✅GET: '/api/blogs/:id/comments' Returns comments for a blog
   // ✅POST: '/api/blogs' Create new Blog *
