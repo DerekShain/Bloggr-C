@@ -8,6 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggr.Controllers
 {
+  // ✅GET: '/api/blogs' Returns all pubished blogs
+  // ✅GET: '/api/blogs/:id' Returns blog by Id
+  // ✅GET: '/api/blogs/:id/comments' Returns comments for a blog
+  // ✅POST: '/api/blogs' Create new Blog *
+  // ✅PUT: '/api/blogs/:id' Edits Blog **
+  // ✅DELETE: '/api/blogs/:id' Deletes Blog **
+
   [ApiController]
   [Route("api/[controller]")]
   public class BlogsController : ControllerBase

@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggr.Controllers
 {
-  // GET: '/api/profile/:id' returns users profile
-  // GET: '/api/profile/:id/blogs' returns users Blogs
-  // GET: '/api/profile/:id/comments' returns users Comments
+  // ❌GET: '/api/profile/:id' returns users profile
+  // ❌GET: '/api/profile/:id/blogs' returns users Blogs
+  // ❌GET: '/api/profile/:id/comments' returns users Comments
   // ✅GET: '/account' returns logged in users profile*
   // ✅GET: '/account/blogs' returns logged in users Blogs*
   // ✅GET: '/account/comments' returns logged in users Comments*
-  // PUT: '/account' Allows user to edit their own profile**
+  // ❌PUT: '/account' Allows user to edit their own profile**
   [ApiController]
   [Route("[controller]")]
   public class AccountController : ControllerBase
