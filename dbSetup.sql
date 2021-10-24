@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS blogs(
 ) default charset utf8 COMMENT '';
 
 CREATE TABLE IF NOT EXISTS comments(
-  id INT NOT NULL primary key AUTO_INCREMENT COMMENT 'primary key',
-  body varchar(255) COMMENT 'BODY',
- creatorId varchar(255) COMMENT 'CreatorId',
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  body varchar(5000) COMMENT 'BODY',
+  creatorId varchar(255) COMMENT 'CreatorId',
   blog INT COMMENT 'BLOG',
   FOREIGN KEY(creatorId) REFERENCES accounts(id) ON DELETE CASCADE,
   FOREIGN KEY(blog) REFERENCES blogs(id) ON DELETE CASCADE

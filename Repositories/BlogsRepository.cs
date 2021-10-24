@@ -86,6 +86,17 @@ namespace Bloggr.Repositories
       return blogData;
     }
 
+    internal List<Blog> GetBlogByAccount(string userId)
+    {
+      string sql = @"
+      SELECT
+      *
+      FROM blogs b
+      WHERE b.creatorId = @userId
+      ";
+      return _dataBase.Query<Blog>(sql, new { userId }).ToList();
+    }
+
     internal void Delete(int blogId)
     {
       var rowsAffected = _dataBase.Execute("DELETE FROM blogs WHERE id = @blogId LIMIT 1", new { blogId });

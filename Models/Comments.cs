@@ -12,7 +12,7 @@ namespace Bloggr.Models
     [Required]
     public int Blog { get; set; }
     public string Title { get; set; }
-    public bool published { get; set; }
+    public bool Published { get; set; }
     public Profile Creator { get; internal set; }
   }
 }

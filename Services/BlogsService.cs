@@ -48,5 +48,10 @@ namespace Bloggr.Services
       }
       _blogsRepository.Delete(blogId);
     }
+
+    public List<Blog> GetBlogByAccount(string userId)
+    {
+      return _blogsRepository.GetBlogByAccount(userId);
+    }
   }
 }

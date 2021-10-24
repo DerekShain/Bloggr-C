@@ -24,11 +24,16 @@ namespace Bloggr.Services
 
     public Comment Edit(int commentId, Comment commentData)
     {
-      var comment = GetById(commentId);
+      Comment comment = GetById(commentId);
+      if (comment.CreatorId != comment.CreatorId)
+      {
+        throw new Exception("Not Allowed");
+      }
       comment.Body = commentData.Body ?? comment.Body;
       comment.Blog = commentData.Blog;
-      _commentsRepository.Edit(commentId, commentData);
-      return comment;
+      comment.Title = commentData.Title ?? comment.Title;
+      comment.Published = commentData.Published;
+      return _commentsRepository.Edit(commentId, commentData);
     }
 
     public Comment GetById(int commentId)
@@ -41,11 +46,19 @@ namespace Bloggr.Services
       return foundComment;
     }
 
-    public Comment Delete(int commentId)
+    public void Delete(int commentId, string userId)
     {
-      var comment = GetById(commentId);
+      Comment comment = GetById(commentId);
+      if (comment.CreatorId != userId)
+      {
+        throw new Exception("not authorized");
+      }
       _commentsRepository.Delete(commentId);
-      return comment;
+    }
+
+    public List<Comment> GetCommentByAccount(string userId)
+    {
+      return _commentsRepository.GetCommentByAccount(userId);
     }
   }
 }

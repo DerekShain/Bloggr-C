@@ -36,11 +36,13 @@ namespace Bloggr.Controllers
     }
     [HttpPut("{commentId}")]
     [Authorize]
-    public ActionResult<Comment> Edit(int commentId, [FromBody] Comment commentData)
+    public async Task<ActionResult<Comment>> Edit(int commentId, [FromBody] Comment commentData)
     {
       try
       {
-        var comment = _commentsService.Edit(commentId, commentData);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        commentData.CreatorId = userInfo.Id;
+        Comment comment = _commentsService.Edit(commentId, commentData);
         return Ok(comment);
       }
       catch (System.Exception e)
@@ -50,12 +52,13 @@ namespace Bloggr.Controllers
     }
     [HttpDelete("{commentId}")]
     [Authorize]
-    public ActionResult<Comment> Delete(int commentId)
+    public async Task<ActionResult<string>> Delete(int commentId)
     {
       try
       {
-        var comment = _commentsService.Delete(commentId);
-        return Ok(comment);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        _commentsService.Delete(commentId, userInfo.Id);
+        return Ok("Deleted");
       }
       catch (System.Exception e)
       {

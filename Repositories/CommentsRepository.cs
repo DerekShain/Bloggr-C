@@ -16,7 +16,10 @@ namespace Bloggr.Repositories
     }
     internal List<Comment> GetBlogComment(int blogId)
     {
-      string sql = @" SELECT * FROM comments c WHERE c.blogId = @blogId";
+      string sql = @" 
+      SELECT 
+      *
+      FROM comments c WHERE c.blog = @blogId";
       return _dataBase.Query<Comment>(sql, new { blogId }).ToList();
     }
 
@@ -43,11 +46,11 @@ namespace Bloggr.Repositories
     internal Comment Edit(int commentId, Comment commentData)
     {
       commentData.Id = commentId;
-      var sql = @"
+      string sql = @"
       UPDATE comments
       SET
       body = @Body,
-    WHERE id = @Id
+      WHERE id = @Id
       ";
       var rowsAffected = _dataBase.Execute(sql, commentData);
       if (rowsAffected > 1)
@@ -63,12 +66,18 @@ namespace Bloggr.Repositories
 
     internal Comment GetById(int commentId)
     {
-      return _dataBase.QueryFirstOrDefault<Comment>("SELECT * FROM artists WHERE id = @id", new { commentId });
+      return _dataBase.QueryFirstOrDefault<Comment>(@"
+      SELECT 
+      * 
+      FROM comments 
+      WHERE id = @commentId", new { commentId });
     }
 
     internal void Delete(int commentId)
     {
-      var rowsAffected = _dataBase.Execute("DELETE FROM comments WHERE id = @id", new { commentId });
+      var rowsAffected = _dataBase.Execute(@"
+      DELETE FROM comments 
+      WHERE id = @commentId LIMIT 1", new { commentId });
       if (rowsAffected > 1)
       {
         throw new System.Exception("Something is wrong");
@@ -77,6 +86,17 @@ namespace Bloggr.Repositories
       {
         throw new System.Exception("Delete Failed");
       }
+    }
+
+    internal List<Comment> GetCommentByAccount(string userId)
+    {
+      string sql = @"
+      SELECT
+      *
+      FROM comments c
+      WHERE c.creatorId = @userId
+      ";
+      return _dataBase.Query<Comment>(sql, new { userId }).ToList();
     }
   }
 }
