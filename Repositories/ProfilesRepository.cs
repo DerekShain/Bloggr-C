@@ -1,4 +1,5 @@
 using System.Data;
+using System.Linq;
 using Bloggr.Models;
 using Dapper;
 
@@ -14,12 +15,12 @@ namespace Bloggr.Services
 
     internal Profile Get(string profileId)
     {
-      return _dataBase.QueryFirstOrDefault<Profile>(@"
+      return _dataBase.Query<Profile>(@"
       SELECT
       *
       FROM accounts
       WHERE id = @id;
-      ", new { profileId });
+      ", new { profileId }).FirstOrDefault();
     }
   }
 }

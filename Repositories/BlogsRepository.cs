@@ -56,12 +56,13 @@ namespace Bloggr.Repositories
 
     internal List<Blog> GetAll()
     {
-      return _dataBase.Query<Blog>(@"
-      SELECT 
-      * 
-      FROM blogs").ToList();
+      var sql = @"
+      SELECT
+      *
+      FROM blogs
+      ";
+      return _dataBase.Query<Blog>(sql).ToList();
     }
-
     internal Blog Edit(int blogId, Blog blogData)
     {
       blogData.Id = blogId;
@@ -79,13 +80,8 @@ namespace Bloggr.Repositories
       {
         throw new System.Exception("SOmething is wrong");
       }
-      // if (rowsAffected == 0)
-      // {
-      //   throw new System.Exception("Edit Failed");
-      // }
       return blogData;
     }
-
     internal List<Blog> GetBlogByAccount(string userId)
     {
       string sql = @"
@@ -96,10 +92,14 @@ namespace Bloggr.Repositories
       ";
       return _dataBase.Query<Blog>(sql, new { userId }).ToList();
     }
-
     internal void Delete(int blogId)
     {
-      var rowsAffected = _dataBase.Execute("DELETE FROM blogs WHERE id = @blogId LIMIT 1", new { blogId });
+      var sql = @"
+      DELETE
+      FROM blogs
+      WHERE id = @blogId LIMIT 1
+      ";
+      var rowsAffected = _dataBase.Execute(sql, new { blogId });
       if (rowsAffected > 1)
       {
         throw new System.Exception("Something is wrong");

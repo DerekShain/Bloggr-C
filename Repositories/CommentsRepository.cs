@@ -14,15 +14,6 @@ namespace Bloggr.Repositories
     {
       _dataBase = dataBase;
     }
-    internal List<Comment> GetBlogComment(int blogId)
-    {
-      string sql = @" 
-      SELECT 
-      *
-      FROM comments c WHERE c.blog = @blogId";
-      return _dataBase.Query<Comment>(sql, new { blogId }).ToList();
-    }
-
     internal Comment Post(Comment commentData)
     {
       var sql = @"
@@ -42,7 +33,24 @@ namespace Bloggr.Repositories
       commentData.Id = id;
       return commentData;
     }
-
+    internal Comment GetById(int commentId)
+    {
+      var sql = @"
+      SELECT 
+      *
+      FROM comments
+      WHERE id = @commentId
+      ";
+      return _dataBase.Query<Comment>(sql, new { commentId }).FirstOrDefault();
+    }
+    internal List<Comment> GetBlogComment(int blogId)
+    {
+      string sql = @" 
+      SELECT 
+      *
+      FROM comments c WHERE c.blog = @blogId";
+      return _dataBase.Query<Comment>(sql, new { blogId }).ToList();
+    }
     internal Comment Edit(int commentId, Comment commentData)
     {
       commentData.Id = commentId;
@@ -63,31 +71,6 @@ namespace Bloggr.Repositories
       }
       return commentData;
     }
-
-    internal Comment GetById(int commentId)
-    {
-      return _dataBase.QueryFirstOrDefault<Comment>(@"
-      SELECT 
-      * 
-      FROM comments 
-      WHERE id = @commentId", new { commentId });
-    }
-
-    internal void Delete(int commentId)
-    {
-      var rowsAffected = _dataBase.Execute(@"
-      DELETE FROM comments 
-      WHERE id = @commentId LIMIT 1", new { commentId });
-      if (rowsAffected > 1)
-      {
-        throw new System.Exception("Something is wrong");
-      }
-      if (rowsAffected == 0)
-      {
-        throw new System.Exception("Delete Failed");
-      }
-    }
-
     internal List<Comment> GetCommentByAccount(string userId)
     {
       string sql = @"
@@ -98,5 +81,23 @@ namespace Bloggr.Repositories
       ";
       return _dataBase.Query<Comment>(sql, new { userId }).ToList();
     }
+    internal void Delete(int commentId)
+    {
+      var sql = @"
+      DELETE
+      FROM comments
+      WHERE id = @commentId LIMIT 1
+      ";
+      var rowsAffected = _dataBase.Execute(sql, new { commentId });
+      if (rowsAffected > 1)
+      {
+        throw new System.Exception("Something is wrong");
+      }
+      if (rowsAffected == 0)
+      {
+        throw new System.Exception("Delete Failed");
+      }
+    }
+
   }
 }
