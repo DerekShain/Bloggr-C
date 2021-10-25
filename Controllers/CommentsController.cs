@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bloggr.Controllers
 {
   // ✅POST: '/api/comments' Create new Comment *
-  // ❌PUT: '/api/comments/:id' Edits Comment **
+  // ✅PUT: '/api/comments/:id' Edits Comment **
   // ✅DELETE: '/api/comments/:id' Deletes Comment **
   [ApiController]
   [Route("api/[controller]")]

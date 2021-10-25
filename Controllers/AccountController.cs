@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggr.Controllers
 {
-  // ❌GET: '/api/profile/:id' returns users profile
-  // ❌GET: '/api/profile/:id/blogs' returns users Blogs
-  // ❌GET: '/api/profile/:id/comments' returns users Comments
+  // ✅GET: '/api/profile/:id' returns users profile
+  // ✅GET: '/api/profile/:id/blogs' returns users Blogs
+  // ✅GET: '/api/profile/:id/comments' returns users Comments
   // ✅GET: '/account' returns logged in users profile*
   // ✅GET: '/account/blogs' returns logged in users Blogs*
   // ✅GET: '/account/comments' returns logged in users Comments*
-  // ❌PUT: '/account' Allows user to edit their own profile**
+  // ✅PUT: '/account' Allows user to edit their own profile**
   [ApiController]
   [Route("[controller]")]
   public class AccountController : ControllerBase
@@ -23,18 +23,16 @@ namespace Bloggr.Controllers
     private readonly AccountService _accountService;
     private readonly BlogsService _blogsService;
     private readonly CommentsService _commentsService;
-    // private readonly ProfilesService _profilesService;
 
     public AccountController(AccountService accountService, BlogsService blogsService, CommentsService commentsService)
     {
       _accountService = accountService;
       _blogsService = blogsService;
       _commentsService = commentsService;
-      //   _profilesService = profilesService;
     }
 
     [HttpGet]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<Account>> Get()
     {
       try
@@ -48,7 +46,7 @@ namespace Bloggr.Controllers
       }
     }
     [HttpGet("blogs")]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<List<Blog>>> GetBlogByAccount()
     {
       try
@@ -62,7 +60,7 @@ namespace Bloggr.Controllers
       }
     }
     [HttpGet("comments")]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<List<Comment>>> GetCommentByAccount()
     {
       try
