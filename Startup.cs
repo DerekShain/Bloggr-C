@@ -32,13 +32,14 @@ namespace Bloggr
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bloggr", Version = "v1" });
       });
       services.AddScoped<IDbConnection>(x => CreateDbConnection());
-
       services.AddScoped<AccountsRepository>();
       services.AddScoped<AccountService>();
       services.AddTransient<BlogsService>();
       services.AddTransient<BlogsRepository>();
       services.AddTransient<CommentsService>();
       services.AddTransient<CommentsRepository>();
+      services.AddTransient<ProfilesService>();
+      services.AddTransient<ProfilesRepository>();
     }
 
     private void ConfigureCors(IServiceCollection services)
@@ -47,14 +48,14 @@ namespace Bloggr
       {
         options.AddPolicy("CorsDevPolicy", builder =>
               {
-            builder
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials()
-                  .WithOrigins(new string[]{
+                builder
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials()
+                      .WithOrigins(new string[]{
                         "http://localhost:8080", "http://localhost:8081"
+                  });
               });
-          });
       });
     }
 

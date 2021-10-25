@@ -60,6 +60,7 @@ namespace Bloggr.Repositories
       SELECT
       *
       FROM blogs
+      Where published = true
       ";
       return _dataBase.Query<Blog>(sql).ToList();
     }
@@ -82,6 +83,18 @@ namespace Bloggr.Repositories
       }
       return blogData;
     }
+
+    internal List<Blog> GetBlogByProfile(string profileId)
+    {
+      string sql = @"
+      SELECT
+      *
+      FROM blogs b
+      WHERE b.creatorId = @profileId AND published = true
+      ";
+      return _dataBase.Query<Blog>(sql, new { profileId }).ToList();
+    }
+
     internal List<Blog> GetBlogByAccount(string userId)
     {
       string sql = @"

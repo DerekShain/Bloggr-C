@@ -44,7 +44,7 @@ namespace Bloggr.Repositories
               name = @Name,
               picture = @Picture,
               email = @Email
-            WHERE id = @Id;";
+            WHERE id = @Id";
       _db.Execute(sql, update);
       return update;
     }

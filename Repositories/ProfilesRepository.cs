@@ -15,12 +15,13 @@ namespace Bloggr.Services
 
     internal Profile Get(string profileId)
     {
-      return _dataBase.Query<Profile>(@"
-      SELECT
+      var sql = @"
+      SELECT 
       *
-      FROM accounts
-      WHERE id = @id;
-      ", new { profileId }).FirstOrDefault();
+      FROM
+      accounts
+      ";
+      return _dataBase.Query<Profile>(sql, new { profileId }).FirstOrDefault();
     }
   }
 }

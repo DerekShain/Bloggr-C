@@ -34,7 +34,7 @@ namespace Bloggr.Controllers
     }
 
     [HttpGet]
-    [Authorize]
+    // [Authorize]
     public async Task<ActionResult<Account>> Get()
     {
       try
@@ -48,7 +48,7 @@ namespace Bloggr.Controllers
       }
     }
     [HttpGet("blogs")]
-    [Authorize]
+    // [Authorize]
     public async Task<ActionResult<List<Blog>>> GetBlogByAccount()
     {
       try
@@ -62,7 +62,7 @@ namespace Bloggr.Controllers
       }
     }
     [HttpGet("comments")]
-    [Authorize]
+    // [Authorize]
     public async Task<ActionResult<List<Comment>>> GetCommentByAccount()
     {
       try
@@ -83,7 +83,8 @@ namespace Bloggr.Controllers
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         accountUpdated.Id = userInfo.Id;
-        Account account = _accountService.Edit(accountUpdated);
+        accountUpdated.Email = userInfo.Email;
+        Account account = _accountService.Edit(accountUpdated, accountUpdated.Email);
         return Ok(account);
       }
       catch (System.Exception e)

@@ -8,9 +8,11 @@ namespace Bloggr.Services
   public class BlogsService
   {
     private readonly BlogsRepository _blogsRepository;
-    public BlogsService(BlogsRepository blogsRepository)
+    private readonly ProfilesService _profilesService;
+    public BlogsService(BlogsRepository blogsRepository, ProfilesService profilesService)
     {
       _blogsRepository = blogsRepository;
+      _profilesService = profilesService;
     }
     public List<Blog> GetAll()
     {
@@ -47,6 +49,11 @@ namespace Bloggr.Services
         throw new Exception("not authorized");
       }
       _blogsRepository.Delete(blogId);
+    }
+
+    public List<Blog> GetBlogByProfile(string profileId)
+    {
+      return _blogsRepository.GetBlogByProfile(profileId);
     }
 
     public List<Blog> GetBlogByAccount(string userId)

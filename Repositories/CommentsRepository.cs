@@ -57,7 +57,7 @@ namespace Bloggr.Repositories
       string sql = @"
       UPDATE comments
       SET
-      body = @Body,
+      body = @Body
       WHERE id = @Id
       ";
       var rowsAffected = _dataBase.Execute(sql, commentData);
@@ -71,16 +71,8 @@ namespace Bloggr.Repositories
       }
       return commentData;
     }
-    internal List<Comment> GetCommentByAccount(string userId)
-    {
-      string sql = @"
-      SELECT
-      *
-      FROM comments c
-      WHERE c.creatorId = @userId
-      ";
-      return _dataBase.Query<Comment>(sql, new { userId }).ToList();
-    }
+
+
     internal void Delete(int commentId)
     {
       var sql = @"
@@ -97,6 +89,26 @@ namespace Bloggr.Repositories
       {
         throw new System.Exception("Delete Failed");
       }
+    }
+    internal List<Comment> GetCommentByProfile(string profileId)
+    {
+      string sql = @"
+      SELECT
+      *
+      FROM comments c
+      WHERE c.creatorId = @profileId
+      ";
+      return _dataBase.Query<Comment>(sql, new { profileId }).ToList();
+    }
+    internal List<Comment> GetCommentByAccount(string userId)
+    {
+      string sql = @"
+      SELECT
+      *
+      FROM comments c
+      WHERE c.creatorId = @userId
+      ";
+      return _dataBase.Query<Comment>(sql, new { userId }).ToList();
     }
 
   }
